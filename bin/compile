@@ -44,6 +44,9 @@ def sync_app_from_bucket(build_path)
   s3_env_keys = %w{ AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY S3_BUCKET }
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
+  puts "-----> Installing S3Cmd"
+
+  `sudo apt-get install s3cmd`
 end
 
 install_meteor ARGV[0], ARGV[1]
