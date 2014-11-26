@@ -48,7 +48,7 @@ def sync_app_from_bucket(build_path)
     require 's3'
   rescue LoadError
     puts "-----> Installing S3 Ruby gem"
-    `gem install s3 2>&1`
+    # `gem install s3 2>&1`
     retry
   end
 
