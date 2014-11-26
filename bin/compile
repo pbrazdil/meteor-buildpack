@@ -44,9 +44,23 @@ def sync_app_from_bucket(build_path)
   s3_env_keys = %w{ AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY S3_BUCKET }
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
+  begin
+    require 'aws/s3'
+  rescue
+    `gem install aws-s3`
+    retry
+  end
 
+end
+
+def install_rbenv(build_path)
+  `git clone https://github.com/sstephenson/rbenv.git ~/.rbenv`
+  `export PATH="$HOME/.rbenv/bin:$PATH"`
+  `eval "$(rbenv init -)"`
 end
 
 install_meteor ARGV[0], ARGV[1]
 setup_environment ARGV[0]
+install_rbenv ARGV[0]
+
 sync_app_from_bucket ARGV[0]
