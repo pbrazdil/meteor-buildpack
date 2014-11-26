@@ -5,10 +5,7 @@ require 'tmpdir'
 
 $stdout.sync = true
 
-build_path = ARGV[0]
-cache_path = ARGV[1]
-
-def install_meteor
+def install_meteor(build_path, cache_path)
   puts "----> Installing Meteor"
 
   meteor_build_dir = "#{build_path}/.meteor"
@@ -17,4 +14,4 @@ def install_meteor
   `curl https://install.meteor.com | HOME=#{meteor_build_dir} /bin/sh`
 end
 
-install_meteor
+install_meteor ARGV[0], ARGV[1]
