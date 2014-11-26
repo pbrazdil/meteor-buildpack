@@ -54,21 +54,20 @@ def sync_app_from_bucket(build_path, cache_path)
     require 'aws/s3'
   rescue LoadError
     install_rbenv cache_path
-    `gem install aws-s3`
+    `GEM_HOME=#{cache_path}/.gems gem install aws-s3`
     retry
   end
 
 end
 
 def install_rbenv(cache_path)
-  FileUtils.remove_dir "#{cache_path}/.rbenv" if File.exists? "#{cache_path}/.rbenv 2>&1"
+  FileUtils.remove_dir "#{cache_path}/.rbenv" if File.exists? "#{cache_path}/.rbenv"
 
-  `git clone https://github.com/sstephenson/rbenv.git #{cache_path}/.rbenv`
-  `export PATH="#{cache_path}/.rbenv/bin:$PATH"`
-  # `eval "$(rbenv init -)"`
+  `git clone https://github.com/sstephenson/rbenv.git #{cache_path}/.rbenv 2>&1`
+  `export PATH=#{cache_path}/.rbenv/bin:$PATH`
+  `export GEM_HOME=#{cache_path}/.gems`
 
   FileUtils.mkdir_p "#{cache_path}/.gems"
-  `export GEM_HOME="#{cache_path}/.gems"`
   `#{cache_path}/.rbenv/bin/rbenv init -`
 end
 
