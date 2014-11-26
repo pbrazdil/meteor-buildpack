@@ -2,6 +2,7 @@
 
 require 'fileutils'
 require 'tmpdir'
+require 'json'
 
 $stdout.sync = true
 
@@ -16,4 +17,24 @@ def install_meteor(build_path, cache_path)
   `curl https://install.meteor.com | HOME=#{meteor_build_dir} /bin/sh`
 end
 
+def setup_environment(build_path)
+  puts "----> Setting up environment"
+
+  app = JSON.parse(ENV["VCAP_APPLICATION"])
+  services = JSON.parse(ENV["VCAP_SERVICES"])
+  mongo_url = services.find { |key,value| value[0]['tags'].include? 'mongodb' }[1][0]['credentials']['uri']
+
+  profile_dir = "#{build_path}/.profile.d"
+  FileUtils.mkdir_p profile_dir
+
+  profile_content = <<-eos
+  #!/usr/bin/env ruby
+  export ROOT_URL=#{app["application_uris"][0]}
+  export MONGO_URL=#{mongo_url}
+  eos
+
+  File.open("#{profile_dir}/meteor.sh", 'w') {|f| f.write(profile_content) }
+end
+
 install_meteor ARGV[0], ARGV[1]
+setup_environment ARGV[0]
