@@ -46,7 +46,7 @@ def sync_app_from_bucket(build_path)
 
   puts "-----> Installing S3Cmd"
 
-  `sudo apt-get install s3cmd`
+  `apt-get install s3cmd`
 end
 
 install_meteor ARGV[0], ARGV[1]
