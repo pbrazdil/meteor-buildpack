@@ -42,7 +42,7 @@ def setup_environment(build_path)
   File.open("#{profile_dir}/meteor.sh", 'w') {|f| f.write(profile_content) }
 end
 
-def sync_app_from_bucket(build_path)
+def sync_app_from_bucket(build_path, cache_path)
 
   puts "-----> Syncing from S3 bucket"
 
@@ -50,35 +50,22 @@ def sync_app_from_bucket(build_path)
   s3_env_keys = %w{ AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY S3_BUCKET }
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
-  # begin
-  #   require 'aws/s3'
-  # rescue LoadError
-  #   `gem install aws-s3`
-  #   retry
-  # end
+  begin
+    require 'aws/s3'
+  rescue LoadError
+    install_rbenv cache_path
+    `gem install aws-s3`
+    retry
+  end
 
 end
 
-def install_rbenv(build_path)
-  FileUtils.mkdir_p "#{build_path}/.rbenv"
-
-  `git clone https://github.com/sstephenson/rbenv.git #{build_path}/.rbenv`
-
-  profile_dir = ensure_profile_d build_path
-
-  profile_content = <<-eos
-  #!/usr/bin/env bash
-  export PATH="#{build_path}/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
-  eos
-
-  File.open("#{profile_dir}/rbenv.sh", 'w') {|f| f.write(profile_content) }
-
-  `sh #{profile_dir}/rbenv.sh`
+def install_rbenv(cache_path)
+  `git clone https://github.com/sstephenson/rbenv.git #{cache_path}/.rbenv`
+  `export PATH="#{cache_path}/.rbenv/bin:$PATH"`
+  `eval "$(rbenv init -)"`
 end
 
 install_meteor ARGV[0], ARGV[1]
 setup_environment ARGV[0]
-install_rbenv ARGV[0]
-
-sync_app_from_bucket ARGV[0]
+sync_app_from_bucket ARGV[0], ARGV[0]
