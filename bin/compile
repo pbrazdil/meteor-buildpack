@@ -65,7 +65,8 @@ def install_rbenv(cache_path)
 
   `git clone https://github.com/sstephenson/rbenv.git #{cache_path}/.rbenv`
   `export PATH="#{cache_path}/.rbenv/bin:$PATH"`
-  `eval "$(rbenv init -)"`
+  # `eval "$(rbenv init -)"`
+  `#{cache_path}/.rbenv/bin/rbenv init -`
 end
 
 install_meteor ARGV[0], ARGV[1]
