@@ -45,10 +45,10 @@ def sync_app_from_bucket(build_path)
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
   begin
-    # require 's3'
+    require 's3'
   rescue LoadError
     puts "-----> Installing S3 Ruby gem"
-    # `gem install s3 2>&1`
+    `gem install s3`
     retry
   end
 
