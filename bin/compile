@@ -61,7 +61,8 @@ def sync_app_from_bucket(build_path, cache_path)
 end
 
 def install_rbenv(cache_path)
-  FileUtils.remove_dir "#{cache_path}/.rbenv"
+  FileUtils.remove_dir "#{cache_path}/.rbenv" if File.exists? "#{cache_path}/.rbenv"
+
   `git clone https://github.com/sstephenson/rbenv.git #{cache_path}/.rbenv`
   `export PATH="#{cache_path}/.rbenv/bin:$PATH"`
   `eval "$(rbenv init -)"`
