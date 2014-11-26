@@ -54,6 +54,7 @@ def sync_app_from_bucket(build_path)
 end
 
 def install_rbenv(build_path)
+  FileUtils.mkdir_p "#{build_path}/.rbenv"
   `git clone https://github.com/sstephenson/rbenv.git ~/.rbenv`
   `export PATH="$HOME/.rbenv/bin:$PATH"`
   `eval "$(rbenv init -)"`
