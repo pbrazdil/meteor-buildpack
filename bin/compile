@@ -68,7 +68,9 @@ def install_rbenv(cache_path)
   `export PATH="#{cache_path}/.rbenv/bin:$PATH"`
   `export GEM_HOME="#{cache_path}/.gems"`
 
-  `#{cache_path}/.rbenv/bin/rbenv init -`
+  puts `export`
+
+  puts `#{cache_path}/.rbenv/bin/rbenv init -`
 end
 
 install_meteor ARGV[0], ARGV[1]
