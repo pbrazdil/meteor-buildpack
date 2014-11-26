@@ -6,6 +6,11 @@ require 'json'
 
 $stdout.sync = true
 
+def ensure_profile_d(build_path)
+  profile_dir = "#{build_path}/.profile.d"
+  FileUtils.mkdir_p profile_dir
+end
+
 def install_meteor(build_path, cache_path)
   puts "-----> Installing Meteor"
 
@@ -24,8 +29,7 @@ def setup_environment(build_path)
   services = JSON.parse(ENV["VCAP_SERVICES"])
   mongo_url = services.find { |key,value| value[0]['tags'].include? 'mongodb' }[1][0]['credentials']['uri']
 
-  profile_dir = "#{build_path}/.profile.d"
-  FileUtils.mkdir_p profile_dir
+  ensure_profile_d build_path
 
   profile_content = <<-eos
   #!/usr/bin/env ruby
@@ -57,8 +61,18 @@ def install_rbenv(build_path)
   FileUtils.mkdir_p "#{build_path}/.rbenv"
 
   `git clone https://github.com/sstephenson/rbenv.git #{build_path}/.rbenv`
-  `export PATH="#{build_path}/.rbenv/bin:$PATH"`
-  `eval "$(rbenv init -)"`
+
+  ensure_profile_d build_path
+
+  profile_content = <<-eos
+  #!/usr/bin/env bash
+  export PATH="#{build_path}/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+  eos
+
+  File.open("#{profile_dir}/rbenv.sh", 'w') {|f| f.write(profile_content) }
+
+  `sh #{profile_dir}/rbenv.sh`
 end
 
 install_meteor ARGV[0], ARGV[1]
