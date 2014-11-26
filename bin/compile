@@ -67,8 +67,8 @@ def install_rbenv(cache_path)
   `export PATH="#{cache_path}/.rbenv/bin:$PATH"`
   # `eval "$(rbenv init -)"`
 
-  FileUtils.mkdir_p "#{build_path}/.gems"
-  `export GEM_HOME="#{build_path}/.gems"`
+  FileUtils.mkdir_p "#{cache_path}/.gems"
+  `export GEM_HOME="#{cache_path}/.gems"`
   `#{cache_path}/.rbenv/bin/rbenv init -`
 end
 
