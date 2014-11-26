@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'tmpdir'
+
+$stdout.sync = true
+
+build_path = ARGV[0]
+cache_path = ARGV[1]
+
+def install_meteor
+  puts "----> Installing Meteor"
+
+  meteor_build_dir = "#{build_path}/.meteor"
+  FileUtils.mkdir_p ENV['HOME']
+
+  `curl https://install.meteor.com | HOME=#{meteor_build_dir} /bin/sh`
+end
+
+install_meteor

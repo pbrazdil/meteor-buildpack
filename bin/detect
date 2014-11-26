@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+meteor_path = File.join ARGV[0], ".meteor"
+
+if File.exist?(meteor_path)
+  puts "Meteor"
+  exit 0
+else
+  exit 1
+end
