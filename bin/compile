@@ -50,16 +50,16 @@ def sync_app_from_bucket(build_path, cache_path)
   s3_env_keys = %w{ AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY S3_BUCKET }
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
-  begin
-    ENV['GEM_HOME'] = "#{cache_path}/.gems"
-    require 'aws/s3'
-  rescue LoadError
+  # begin
+  #   ENV['GEM_HOME'] = "#{cache_path}/.gems"
+  #   require 'aws/s3'
+  # rescue LoadError
     install_rbenv cache_path
 
     pid = spawn({'GEM_HOME' => "#{cache_path}/.gems"}, "gem install aws-s3")
     Process.wait pid
-    retry
-  end
+  #   retry
+  # end
 
 end
 
