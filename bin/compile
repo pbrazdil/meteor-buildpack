@@ -74,7 +74,7 @@ def install_rbenv(build_path)
 
   File.open("#{profile_dir}/rbenv.sh", 'w') {|f| f.write(profile_content) }
 
-  `#{profile_dir}/rbenv.sh`
+  `sh #{profile_dir}/rbenv.sh`
 end
 
 install_meteor ARGV[0], ARGV[1]
