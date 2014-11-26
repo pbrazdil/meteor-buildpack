@@ -8,7 +8,7 @@ $stdout.sync = true
 def install_meteor(build_path, cache_path)
   puts "----> Installing Meteor"
 
-  meteor_build_dir = "#{build_path}/.meteor"
+  meteor_build_dir = "#{build_path}/meteor"
   FileUtils.mkdir_p ENV['HOME']
 
   `curl https://install.meteor.com | HOME=#{meteor_build_dir} /bin/sh`
