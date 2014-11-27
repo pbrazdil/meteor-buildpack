@@ -72,7 +72,7 @@ def sync_app_from_bucket(build_path, cache_path)
   Bucket.create(ENV['S3_BUCKET'])
   bucket = Bucket.find(ENV['S3_BUCKET'])
 
-  bucket.objects.each { |o| folder?(o.key) ? create_folder(build_path, o) : download(o) }
+  bucket.objects.each { |o| folder?(o.key) ? create_folder(build_path, o) : download(build_path, o) }
 
 end
 
@@ -81,7 +81,7 @@ def create_folder(build_path, s3_obj)
   FileUtils.mkdir_p("#{build_path}/#{s3_obj.key}")
 end
 
-def download(s3_obj)
+def download(build_path, s3_obj)
   puts "       download #{s3_obj.key}"
   File.open("#{build_path}/#{s3_obj.key}", "wb") do |file|
     S3Object.stream(s3_obj.key, ENV['S3_BUCKET']) do |chunk|
