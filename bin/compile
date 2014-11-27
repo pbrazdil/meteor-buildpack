@@ -73,13 +73,18 @@ def sync_app_from_bucket(build_path, cache_path)
   bucket = Bucket.find(ENV['S3_BUCKET'])
 
   bucket.objects.each { |o|
-
-    path = o.key.split("/").reject{ |c| c.empty? }
-    path.shift()
-
-    FileUtils.mkdir_p("#{build_path}/#{path.join("/")}") if folder?(o.key) 
+    FileUtils.mkdir_p("#{build_path}/#{o.key}") if folder?(o.key)
+    download(o) unless folder?(o.key)
   }
 
+end
+
+def download(s3_obj)
+  File.open(s3_obj.key, "wb") do |file|
+    S3Object.stream(s3_obj.key, ENV['S3_BUCKET']) do |chunk|
+      file.write chunk
+    end
+  end
 end
 
 def folder?(path)
