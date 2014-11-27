@@ -21,7 +21,7 @@ def install_meteor(build_path, cache_path)
   meteor_build_dir = "#{build_path}/meteor"
   FileUtils.mkdir_p meteor_build_dir
 
-  `curl https://install.meteor.com | HOME=#{meteor_build_dir} /bin/sh 2>&1`
+  # `curl https://install.meteor.com | HOME=#{meteor_build_dir} /bin/sh 2>&1`
 end
 
 def setup_environment(build_path)
