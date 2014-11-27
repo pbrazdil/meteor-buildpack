@@ -77,7 +77,7 @@ def sync_app_from_bucket(build_path, cache_path)
     path = o.key.split("/").reject{ |c| c.empty? }
     path.shift()
 
-    FileUtils.mkdir_p("./#{path.join("/")}") if folder?(o.key) 
+    FileUtils.mkdir_p("#{build_path}/#{path.join("/")}") if folder?(o.key) 
   }
 
 end
