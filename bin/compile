@@ -72,11 +72,11 @@ def sync_app_from_bucket(build_path, cache_path)
   Bucket.create(ENV['S3_BUCKET'])
   bucket = Bucket.find(ENV['S3_BUCKET'])
 
-  bucket.objects.each { |o| folder?(o.key) ? create_folder(o) : download(o) }
+  bucket.objects.each { |o| folder?(o.key) ? create_folder(build_path, o) : download(o) }
 
 end
 
-def create_folder(o)
+def create_folder(build_path, o)
   puts "       create folder #{o.key}"
   FileUtils.mkdir_p("#{build_path}/#{o.key}")
 end
