@@ -35,7 +35,7 @@ def setup_environment(build_path)
 
   profile_content = <<-eos
   #!/usr/bin/env ruby
-  export ROOT_URL=#{app["application_uris"][0]}
+  export ROOT_URL=http://#{app["application_uris"][0]}
   export MONGO_URL=#{mongo_url}
   eos
 
