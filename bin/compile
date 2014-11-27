@@ -61,6 +61,16 @@ def sync_app_from_bucket(build_path, cache_path)
     retry
   end
 
+  include AWS::S3
+
+  AWS::S3::Base.establish_connection!(
+    :access_key_id     => ENV['AWS_ACCESS_KEY_ID'],
+    :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+  )
+
+  Bucket.create(ENV['S3_BUCKET'])
+  bucket = Bucket.find(ENV['S3_BUCKET'])
+
 end
 
 def install_rbenv(cache_path)
