@@ -54,6 +54,7 @@ def sync_app_from_bucket(build_path, cache_path)
     Gem.use_paths "#{cache_path}/.gem"
     require 'aws/s3'
   rescue LoadError
+    puts "-----> Installing rbenv and AWS::S3"
     install_rbenv cache_path
 
     pid = spawn({'GEM_HOME' => "#{cache_path}/.gem"}, "gem install aws-s3")
@@ -71,6 +72,18 @@ def sync_app_from_bucket(build_path, cache_path)
   Bucket.create(ENV['S3_BUCKET'])
   bucket = Bucket.find(ENV['S3_BUCKET'])
 
+  bucket.objects.each { |o|
+
+    path = o.key.split("/").reject{ |c| c.empty? }
+    path.shift()
+
+    FileUtils.mkdir_p("./#{path.join("/")}") if folder?(o.key) 
+  }
+
+end
+
+def folder?(path)
+  path[path.length - 1] == "/"
 end
 
 def install_rbenv(cache_path)
