@@ -51,7 +51,7 @@ def sync_app_from_bucket(build_path, cache_path)
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
   begin
-    Gem.use_paths "#{cache_path}/.gems"
+    Gem.use_paths "#{cache_path}/.gem"
     require 'aws/s3'
   rescue LoadError
     install_rbenv cache_path
