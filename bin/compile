@@ -76,14 +76,14 @@ def sync_app_from_bucket(build_path, cache_path)
 
 end
 
-def create_folder(build_path, o)
-  puts "       create folder #{o.key}"
-  FileUtils.mkdir_p("#{build_path}/#{o.key}")
+def create_folder(build_path, s3_obj)
+  puts "       create folder #{s3_obj.key}"
+  FileUtils.mkdir_p("#{build_path}/#{s3_obj.key}")
 end
 
 def download(s3_obj)
   puts "       download #{s3_obj.key}"
-  File.open(s3_obj.key, "wb") do |file|
+  File.open("#{build_path}/#{s3_obj.key}", "wb") do |file|
     S3Object.stream(s3_obj.key, ENV['S3_BUCKET']) do |chunk|
       file.write chunk
     end
