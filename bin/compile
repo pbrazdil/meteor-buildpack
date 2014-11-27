@@ -50,15 +50,15 @@ def sync_app_from_bucket(build_path, cache_path)
   s3_env_keys = %w{ AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY S3_BUCKET }
   return unless s3_env_keys.collect{ |e| ENV.has_key? e }.all?
 
-  begin
-    require 'aws/s3'
-  rescue LoadError
-    install_rbenv build_path, cache_path
-
+  # begin
+  #   require 'aws/s3'
+  # rescue LoadError
+  #   install_rbenv build_path, cache_path
+    puts "*** Installing S3 gem to #{build_path}/.gem/ruby/1.9.1"
     pid = spawn({'GEM_HOME' => "#{build_path}/.gem/ruby/1.9.1"}, "gem install aws-s3")
     Process.wait pid
-    retry
-  end
+  #   retry
+  # end
 
 end
 
