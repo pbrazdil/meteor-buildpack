@@ -37,7 +37,7 @@ def setup_environment(build_path)
   #!/usr/bin/env ruby
   export ROOT_URL=http://#{app["application_uris"][0]}
   export MONGO_URL=#{mongo_url}
-  export PATH=$PATH:#{build_path}/meteor/.meteor
+  # export PATH=$PATH:#{build_path}/meteor/.meteor
   eos
 
   File.open("#{profile_dir}/meteor.sh", 'w') {|f| f.write(profile_content) }
