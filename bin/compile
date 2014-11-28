@@ -105,4 +105,4 @@ end
 
 install_meteor ARGV[0], ARGV[1]
 setup_environment ARGV[0]
-# sync_app_from_bucket ARGV[0], ARGV[0]
+sync_app_from_bucket ARGV[0], ARGV[0]
